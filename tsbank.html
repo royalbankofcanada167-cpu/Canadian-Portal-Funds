@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tshore Bank - Complete Prisma Database Schema Documentation" />
+  <meta name="keywords" content="Prisma, Database Schema, PostgreSQL, Banking System" />
+  <meta name="author" content="Tshore Bank Development Team" />
+  <meta name="theme-color" content="#0f172a" />
+  
+  <title>Tshore Bank - Prisma Schema Documentation</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      padding: 40px 20px;
+      margin: 0;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #111827;
+      border-radius: 16px;
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      border: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+      padding-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #60a5fa;
+      font-size: 2.8em;
+      margin-bottom: 15px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header .subtitle {
+      color: #94a3b8;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
+
+    .header .version {
+      color: #64748b;
+      font-size: 0.95em;
+      margin-top: 15px;
+    }
+
+    .documentation {
+      margin-bottom: 50px;
+    }
+
+    .section {
+      margin-bottom: 45px;
+    }
+
+    .section h2 {
+      color: #60a5fa;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+      font-weight: 600;
+    }
+
+    .section h3 {
+      color: #93c5fd;
+      font-size: 1.3em;
+      margin: 25px 0 15px 0;
+      font-weight: 600;
+    }
+
+    .description {
+      color: #cbd5e1;
+      font-size: 1em;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .schema-block {
+      background: #020617;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      border-left: 4px solid #2563eb;
+      overflow-x: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    pre {
+      color: #93c5fd;
+      font-size: 14px;
+      line-height: 1.7;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin: 0;
+    }
+
+    .code-comment {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .keyword {
+      color: #f472b6;
+    }
+
+    .string {
+      color: #86efac;
+    }
+
+    .model-documentation {
+      background: rgba(37, 99, 235, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border-left: 3px solid #2563eb;
+    }
+
+    .field-list {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .field-item {
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      background: #0f172a;
+      border-radius: 6px;
+      border-left: 3px solid #3b82f6;
+      font-size: 0.95em;
+    }
+
+    .field-name {
+      color: #60a5fa;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+    }
+
+    .field-type {
+      color: #f472b6;
+      font-family: 'Courier New', monospace;
+    }
+
+    .field-description {
+      color: #cbd5e1;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    .relationships {
+      background: rgba(59, 130, 246, 0.08);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .relationship-item {
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      color: #cbd5e1;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .feature-card {
+      background: rgba(37, 99, 235, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      background: rgba(37, 99, 235, 0.1);
+      border-color: rgba(96, 165, 250, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .feature-card h4 {
+      color: #60a5fa;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      color: #cbd5e1;
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .specifications {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 25px 0;
+      border: 1px solid rgba(96, 165, 250, 0.15);
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .spec-item {
+      padding: 15px;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 8px;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .spec-label {
+      color: #94a3b8;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .spec-value {
+      color: #60a5fa;
+      font-size: 1.1em;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(96, 165, 250, 0.1);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(96, 165, 250, 0.2);
+      border-color: rgba(96, 165, 250, 0.6);
+    }
+
+    .footer {
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(96, 165, 250, 0.2);
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9em;
+    }
+
+    .footer p {
+      margin: 8px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(37, 99, 235, 0.15);
+      color: #60a5fa;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 500;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .note {
+      background: rgba(251, 191, 36, 0.1);
+      border-left: 4px solid #fbbf24;
+      padding: 15px 20px;
+      border-radius: 6px;
+      margin: 20px 0;
+      color: #fef3c7;
+    }
+
+    .note strong {
+      color: #fcd34d;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      .header h1 {
+        font-size: 2em;
+      }
+
+      .section h2 {
+        font-size: 1.5em;
+      }
+
+      pre {
+        font-size: 12px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        justify-content: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #000;
+      }
+
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 20px;
+      }
+
+      pre {
+        background: #f5f5f5;
+        color: #000;
+        border: 1px solid #ddd;
+      }
+
+      .button-group {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <!-- Header Section -->
+  <div class="header">
+    <h1>🏦 Tshore Bank</h1>
+    <p class="subtitle">Prisma Database Schema Documentation</p>
+    <p class="version">Version 1.0.0 | Last Updated: May 18, 2026</p>
+  </div>
+
+  <!-- Main Documentation -->
+  <div class="documentation">
+
+    <!-- Overview Section -->
+    <section class="section">
+      <h2>📋 Overview</h2>
+      <p class="description">
+        Tshore Bank is a modern banking platform built with Node.js, TypeScript, and Prisma ORM. 
+        This documentation outlines the complete database schema, including data models, relationships, 
+        and field specifications. The schema is designed to support secure financial transactions, 
+        user account management, and multi-currency wallet functionality.
+      </p>
+      
+      <div class="features">
+        <div class="feature-card">
+          <h4>🔐 Security First</h4>
+          <p>Enterprise-grade security with encrypted passwords and secure transaction handling</p>
+        </div>
+        <div class="feature-card">
+          <h4>💱 Multi-Currency Support</h4>
+          <p>Wallet system supporting multiple currencies with configurable defaults</p>
+        </div>
+        <div class="feature-card">
+          <h4>⚡ Real-time Transfers</h4>
+          <p>Instant peer-to-peer transfer capabilities with transaction tracking</p>
+        </div>
+        <div class="feature-card">
+          <h4>📊 Audit Trail</h4>
+          <p>Complete timestamp tracking for all transactions and account activities</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Database Specifications -->
+    <section class="section">
+      <h2>⚙️ Database Specifications</h2>
+      <div class="specifications">
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-label">Database Provider</div>
+            <div class="spec-value">PostgreSQL</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">ORM</div>
+            <div class="spec-value">Prisma</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Client</div>
+            <div class="spec-value">@prisma/client</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Environment Variable</div>
+            <div class="spec-value">DATABASE_URL</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Complete Schema -->
+    <section class="section">
+      <h2>📐 Complete Prisma Schema</h2>
+      <p class="description">The following is the complete, production-ready Prisma schema configuration:</p>
+      
+      <div class="schema-block">
+        <pre>// Prisma Schema File: schema.prisma
+// Generated for Tshore Bank Database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MODEL
+// ============================================
+// Represents system users and account holders
+model User {
+  id         Int        @id @default(autoincrement())
+  email      String     @unique
+  password   String
+  createdAt  DateTime   @default(now())
+
+  // Relations
+  wallets    Wallet[]
+  transfers  Transfer[] @relation("senderTransfers")
+  received   Transfer[] @relation("receiverTransfers")
+}
+
+// ============================================
+// WALLET MODEL
+// ============================================
+// Represents user financial wallets with balance tracking
+model Wallet {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  balance    Decimal   @default(0)
+  currency   String    @default("CAD")
+  createdAt  DateTime  @default(now())
+
+  // Relations
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+// ============================================
+// TRANSFER MODEL
+// ============================================
+// Represents financial transfers between users
+model Transfer {
+  id          Int       @id @default(autoincrement())
+  amount      Decimal
+  senderId    Int
+  receiverId  Int
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  sender      User      @relation(
+                "senderTransfers",
+                fields: [senderId],
+                references: [id]
+              )
+
+  receiver    User      @relation(
+                "receiverTransfers",
+                fields: [receiverId],
+                references: [id]
+              )
+
+  @@index([senderId])
+  @@index([receiverId])
+}
+        </pre>
+      </div>
+
+      <div class="note">
+        <strong>📌 Note:</strong> This schema includes comprehensive indexing on foreign key columns for optimal database performance. 
+        All timestamps use UTC timezone. Decimal type is used for currency values to prevent floating-point precision issues.
+      </div>
+    </section>
+
+    <!-- Data Models -->
+    <section class="section">
+      <h2>📊 Data Models</h2>
+
+      <!-- User Model -->
+      <div class="model-documentation">
+        <h3>👤 User Model</h3>
+        <p class="description">
+          Represents a registered user in the Tshore Bank system. Each user can own multiple wallets 
+          and initiate or receive transfers. User authentication is handled through email and encrypted password storage.
+        </p>
+
+        <div class="field-list">
+          <div class="field-item">
+            <span class="field-name">id</span> <span class="field-type">Int</span>
+            <div class="field-description">Primary key, auto-incremented integer identifier</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">email</span> <span class="field-type">String</span>
+            <div class="field-description">Unique email address for user authentication and identification</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">password</span> <span class="field-type">String</span>
+            <div class="field-description">Hashed password for secure authentication (must be encrypted before storage)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">createdAt</span> <span class="field-type">DateTime</span>
+            <div class="field-description">Account creation timestamp, automatically set to current time</div>
+          </div>
+        </div>
+
+        <div class="relationships">
+          <h4>🔗 Relationships</h4>
+          <div class="relationship-item">
+            <strong>wallets:</strong> One-to-many relationship with Wallet model. One user can have multiple wallets.
+          </div>
+          <div class="relationship-item">
+            <strong>transfers (senderTransfers):</strong> One-to-many relationship representing transfers sent by the user.
+          </div>
+          <div class="relationship-item">
+            <strong>received (receiverTransfers):</strong> One-to-many relationship representing transfers received by the user.
+          </div>
+        </div>
+      </div>
+
+      <!-- Wallet Model -->
+      <div class="model-documentation">
+        <h3>💰 Wallet Model</h3>
+        <p class="description">
+          Represents a financial wallet belonging to a user. Users can maintain multiple wallets 
+          for different currencies. Each wallet tracks a balance and currency type with creation timestamp.
+        </p>
+
+        <div class="field-list">
+          <div class="field-item">
+            <span class="field-name">id</span> <span class="field-type">Int</span>
+            <div class="field-description">Primary key, auto-incremented integer identifier</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">userId</span> <span class="field-type">Int</span>
+            <div class="field-description">Foreign key referencing the User model owner of this wallet</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">balance</span> <span class="field-type">Decimal</span>
+            <div class="field-description">Current wallet balance (defaults to 0, stored as high-precision decimal)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">currency</span> <span class="field-type">String</span>
+            <div class="field-description">Currency code in ISO 4217 format (defaults to "CAD" - Canadian Dollar)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">createdAt</span> <span class="field-type">DateTime</span>
+            <div class="field-description">Wallet creation timestamp, automatically set to current time</div>
+          </div>
+        </div>
+
+        <div class="relationships">
+          <h4>🔗 Relationships</h4>
+          <div class="relationship-item">
+            <strong>user:</strong> Many-to-one relationship with User model. Each wallet belongs to exactly one user.
+          </div>
+        </div>
+
+        <h4>📇 Indexes</h4>
+        <div class="field-list">
+          <div class="field-item">
+            <span class="field-name">userId</span>
+            <div class="field-description">Index on userId for efficient queries of wallets by user</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transfer Model -->
+      <div class="model-documentation">
+        <h3>💸 Transfer Model</h3>
+        <p class="description">
+          Represents a monetary transfer between two users. Each transfer is immutable once created 
+          and includes timestamp tracking for audit purposes. Supports peer-to-peer transactions with 
+          sender and receiver verification.
+        </p>
+
+        <div class="field-list">
+          <div class="field-item">
+            <span class="field-name">id</span> <span class="field-type">Int</span>
+            <div class="field-description">Primary key, auto-incremented integer identifier</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">amount</span> <span class="field-type">Decimal</span>
+            <div class="field-description">Transfer amount in decimal format (high-precision for currency accuracy)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">senderId</span> <span class="field-type">Int</span>
+            <div class="field-description">Foreign key referencing the User model (sender of the transfer)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">receiverId</span> <span class="field-type">Int</span>
+            <div class="field-description">Foreign key referencing the User model (receiver of the transfer)</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">createdAt</span> <span class="field-type">DateTime</span>
+            <div class="field-description">Transfer execution timestamp, automatically set to current time</div>
+          </div>
+        </div>
+
+        <div class="relationships">
+          <h4>🔗 Relationships</h4>
+          <div class="relationship-item">
+            <strong>sender:</strong> Many-to-one relationship with User model via senderTransfers alias.
+          </div>
+          <div class="relationship-item">
+            <strong>receiver:</strong> Many-to-one relationship with User model via receiverTransfers alias.
+          </div>
+        </div>
+
+        <h4>📇 Indexes</h4>
+        <div class="field-list">
+          <div class="field-item">
+            <span class="field-name">senderId</span>
+            <div class="field-description">Index on senderId for efficient queries of outgoing transfers</div>
+          </div>
+          <div class="field-item">
+            <span class="field-name">receiverId</span>
+            <div class="field-description">Index on receiverId for efficient queries of incoming transfers</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features & Best Practices -->
+    <section class="section">
+      <h2>✨ Key Features & Best Practices</h2>
+
+      <h3>🔍 Data Integrity</h3>
+      <div class="field-list">
+        <div class="field-item">
+          <strong>Unique Constraints:</strong> Email addresses are unique to prevent duplicate user accounts
+        </div>
+        <div class="field-item">
+          <strong>Foreign Key Relationships:</strong> All references maintain referential integrity
+        </div>
+        <div class="field-item">
+          <strong>Decimal Precision:</strong> Currency values use Decimal type for exact financial calculations
+        </div>
+        <div class="field-item">
+          <strong>Timestamps:</strong> All records include creation timestamps for audit trails
+        </div>
+      </div>
+
+      <h3>⚡ Performance Optimization</h3>
+      <div class="field-list">
+        <div class="field-item">
+          <strong>Strategic Indexing:</strong> Indexes on foreign key columns (userId, senderId, receiverId) improve query performance
+        </div>
+        <div class="field-item">
+          <strong>Query Optimization:</strong> Use Prisma's relation loading to avoid N+1 queries
+        </div>
+        <div class="field-item">
+          <strong>Connection Pooling:</strong> Configure PostgreSQL connection pooling for high-throughput scenarios
+        </div>
+      </div>
+
+      <h3>🔐 Security Considerations</h3>
+      <div class="field-list">
+        <div class="field-item">
+          <strong>Password Hashing:</strong> Always hash passwords using bcrypt or similar before storing
+        </div>
+        <div class="field-item">
+          <strong>Input Validation:</strong> Validate all user inputs on the application layer
+        </div>
+        <div class="field-item">
+          <strong>Transaction Verification:</strong> Implement validation to prevent invalid transfers
+        </div>
+        <div class="field-item">
+          <strong>Access Control:</strong> Implement role-based access control at the application level
+        </div>
+      </div>
+    </section>
+
+    <!-- Setup Instructions -->
+    <section class="section">
+      <h2>🚀 Setup Instructions</h2>
+
+      <h3>1️⃣ Installation</h3>
+      <div class="schema-block">
+        <pre>npm install @prisma/client
+npm install -D prisma</pre>
+      </div>
+
+      <h3>2️⃣ Environment Configuration</h3>
+      <p class="description">Create a <code>.env</code> file in your project root:</p>
+      <div class="schema-block">
+        <pre>DATABASE_URL="postgresql://user:password@localhost:5432/tshore_bank"</pre>
+      </div>
+
+      <h3>3️⃣ Database Setup</h3>
+      <div class="schema-block">
+        <pre># Create migration
+npx prisma migrate dev --name init
+
+# Apply migrations
+npx prisma migrate deploy
+
+# Generate Prisma Client
+npx prisma generate</pre>
+      </div>
+
+      <h3>4️⃣ Verify Installation</h3>
+      <div class="schema-block">
+        <pre># Open Prisma Studio to inspect database
+npx prisma studio</pre>
+      </div>
+    </section>
+
+    <!-- Usage Examples -->
+    <section class="section">
+      <h2>💡 Usage Examples</h2>
+
+      <h3>Create User</h3>
+      <div class="schema-block">
+        <pre>const user = await prisma.user.create({
+  data: {
+    email: "john@example.com",
+    password: hashedPassword,
+  },
+});</pre>
+      </div>
+
+      <h3>Create Wallet</h3>
+      <div class="schema-block">
+        <pre>const wallet = await prisma.wallet.create({
+  data: {
+    userId: user.id,
+    balance: 1000.00,
+    currency: "CAD",
+  },
+});</pre>
+      </div>
+
+      <h3>Execute Transfer</h3>
+      <div class="schema-block">
+        <pre>const transfer = await prisma.transfer.create({
+  data: {
+    amount: 250.50,
+    senderId: user1.id,
+    receiverId: user2.id,
+  },
+});</pre>
+      </div>
+
+      <h3>Fetch User with Relations</h3>
+      <div class="schema-block">
+        <pre>const userWithData = await prisma.user.findUnique({
+  where: { id: userId },
+  include: {
+    wallets: true,
+    transfers: true,
+    received: true,
+  },
+});</pre>
+      </div>
+    </section>
+
+    <!-- Support & Maintenance -->
+    <section class="section">
+      <h2>📞 Support & Maintenance</h2>
+
+      <div class="features">
+        <div class="feature-card">
+          <h4>🐛 Troubleshooting</h4>
+          <p>For common issues, check migration conflicts and database connection settings in your .env file</p>
+        </div>
+        <div class="feature-card">
+          <h4>📚 Documentation</h4>
+          <p>Visit <a href="https://www.prisma.io/docs/" style="color: #60a5fa;">Prisma Documentation</a> for detailed guidance</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔄 Migrations</h4>
+          <p>Use <code>npx prisma migrate dev</code> for development and <code>npx prisma migrate deploy</code> for production</p>
+        </div>
+        <div class="feature-card">
+          <h4>✅ Validation</h4>
+          <p>Run schema validation with <code>npx prisma validate</code> before deployment</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="button-group">
+    <a href="data:text/plain;charset=utf-8,%2F%2F%20Prisma%20Schema%20File%3A%20schema.prisma%0A%2F%2F%20Generated%20for%20Tshore%20Bank%20Database%0A%0Agenerator%20client%20%7B%0A%20%20provider%20%3D%20%22prisma-client-js%22%0A%7D%0A%0Adatasource%20db%20%7B%0A%20%20provider%20%3D%20%22postgresql%22%0A%20%20url%20%20%20%20%20%20%3D%20env%28%22DATABASE_URL%22%29%0A%7D%0A%0Amodel%20User%20%7B%0A%20%20id%20%20%20%20%20%20%20Int%20%20%20%20%20%20%20%20%40id%20%40default%28autoincrement%28%29%29%0A%20%20email%20%20%20%20%20String%20%20%20%20%20%40unique%0A%20%20password%20%20%20String%0A%20%20createdAt%20%20DateTime%20%20%20%40default%28now%28%29%29%0A%0A%20%20wallets%20%20%20%20Wallet%5B%5D%0A%20%20transfers%20%20%20Transfer%5B%5D%20%40relation%28%22senderTransfers%22%29%0A%20%20received%20%20%20Transfer%5B%5D%20%40relation%28%22receiverTransfers%22%29%0A%7D%0A%0Amodel%20Wallet%20%7B%0A%20%20id%20%20%20%20%20%20%20Int%20%20%20%20%20%20%20%40id%20%40default%28autoincrement%28%29%29%0A%20%20userId%20%20%20%20%20Int%0A%20%20balance%20%20%20%20Decimal%20%20%20%40default%280%29%0A%20%20currency%20%20%20String%20%20%20%20%40default%28%22CAD%22%29%0A%20%20createdAt%20%20DateTime%20%20%40default%28now%28%29%29%0A%0A%20%20user%20%20%20%20%20%20%20User%20%20%20%20%20%20%40relation%28fields%3A%20%5BuserId%5D%2C%20references%3A%20%5Bid%5D%29%0A%7D%0A%0Amodel%20Transfer%20%7B%0A%20%20id%20%20%20%20%20%20%20%20%20%20Int%20%20%20%20%20%20%20%40id%20%40default%28autoincrement%28%29%29%0A%20%20amount%20%20%20%20%20%20%20Decimal%0A%20%20senderId%20%20%20%20%20%20Int%0A%20%20receiverId%20%20%20%20%20Int%0A%20%20createdAt%20%20%20%20%20%20DateTime%20%20%40default%28now%28%29%29%0A%0A%20%20sender%20%20%20%20%20%20%20User%20%20%20%20%20%20%40relation%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22senderTransfers%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fields%3A%20%5BsenderId%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20references%3A%20%5Bid%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%0A%20%20receiver%20%20%20%20%20User%20%20%20%20%20%20%40relation%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22receiverTransfers%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fields%3A%20%5BrecieverId%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20references%3A%20%5Bid%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%7D" 
+       class="btn btn-primary" download="schema.prisma">
+      📥 Download Schema File
+    </a>
+    <button class="btn btn-secondary" onclick="window.print()">
+      🖨️ Print Documentation
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><strong>Tshore Bank Database Documentation</strong></p>
+    <p>Version 1.0.0 | Last Updated: May 18, 2026</p>
+    <p>© 2026 Tshore Bank Development Team. All rights reserved.</p>
+    <p style="margin-top: 15px; color: #475569;">
+      <a href="https://www.prisma.io/" style="color: #60a5fa; text-decoration: none;">Powered by Prisma</a> | 
+      <a href="https://www.postgresql.org/" style="color: #60a5fa; text-decoration: none;">PostgreSQL</a>
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
